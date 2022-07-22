@@ -48,18 +48,22 @@ async def calc_progress(pct):
 # Function to find DC Id:
 async def find_dc(chat_status):
     dc = chat_status.dc_id
-    dc_id = {dc == 1: "𝙼𝚒𝚊𝚖𝚒 𝙵𝙻, 𝚄𝚂𝙰 [𝐃𝐂 𝟏]", dc == 2: "𝙰𝚖𝚜𝚝𝚎𝚛𝚍𝚊𝚖, 𝙽𝙻 [𝐃𝐂 𝟐]", dc == 3: "𝙼𝚒𝚊𝚖𝚒 𝙵𝙻, 𝚄𝚂𝙰 [𝐃𝐂 𝟑]",
-             dc == 4: "𝙰𝚖𝚜𝚝𝚎𝚛𝚍𝚊𝚖, 𝙽𝙻 [𝐃𝐂 𝟒]", dc == 5: "𝐒𝐢𝐧𝐠𝐚𝐩𝐨𝐫𝐞, 𝐒𝐆 [𝐃𝐂 𝟓]"}.get(True)
-    return dc_id
+    return {
+        dc == 1: "𝙼𝚒𝚊𝚖𝚒 𝙵𝙻, 𝚄𝚂𝙰 [𝐃𝐂 𝟏]",
+        dc == 2: "𝙰𝚖𝚜𝚝𝚎𝚛𝚍𝚊𝚖, 𝙽𝙻 [𝐃𝐂 𝟐]",
+        dc == 3: "𝙼𝚒𝚊𝚖𝚒 𝙵𝙻, 𝚄𝚂𝙰 [𝐃𝐂 𝟑]",
+        dc == 4: "𝙰𝚖𝚜𝚝𝚎𝚛𝚍𝚊𝚖, 𝙽𝙻 [𝐃𝐂 𝟒]",
+        dc == 5: "𝐒𝐢𝐧𝐠𝐚𝐩𝐨𝐫𝐞, 𝐒𝐆 [𝐃𝐂 𝟓]",
+    }.get(True)
 
 
 # Function to save the target chat index.
 async def save_target_cfg(id, target_chat):
-    cfg_save_dir = os.getcwd() + "/" + "cfg" + "/" + str(id)
+    cfg_save_dir = f"{os.getcwd()}/cfg/{str(id)}"
     if not os.path.isdir(cfg_save_dir):
         os.makedirs(cfg_save_dir)
     chat_id = str(target_chat).split('-100')[1]
-    save_csv_path = cfg_save_dir + "/" + str(chat_id) + ".csv"
+    save_csv_path = f"{cfg_save_dir}/{str(chat_id)}.csv"
     with open(save_csv_path, 'w') as file:
         wr = csv.writer(file, quoting=csv.QUOTE_ALL)
         wr.writerow(master_index)
@@ -68,7 +72,7 @@ async def save_target_cfg(id, target_chat):
 # Function to import the cfg data to master list
 async def import_cfg_data(id, target_chat):
     chat_id = str(target_chat).split("-100")[1]
-    cfg_file = os.getcwd() + "/" + "cfg" + "/" + str(id) + "/" + str(chat_id) + ".csv"
+    cfg_file = f"{os.getcwd()}/cfg/{str(id)}/{str(chat_id)}.csv"
     with open(cfg_file, 'r') as file:
         read = list(csv.reader(file))
         index = list(itertools.chain.from_iterable(read))
@@ -82,7 +86,7 @@ async def import_cfg_data(id, target_chat):
 
 # Function to remove the cfg files stored by the user.
 async def del_user_cfg(id):
-    cfg_path = os.getcwd() + "/" + "cfg" + "/" + str(id)
+    cfg_path = f"{os.getcwd()}/cfg/{str(id)}"
     if os.path.exists(cfg_path):
         try:
             shutil.rmtree(cfg_path)
