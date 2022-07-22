@@ -20,6 +20,4 @@ async def text_update(client: Bot, message: Message):
                                  parse_mode='html',
                                  disable_web_page_preview=True
                                  )
-    else:
-        pass
     await message.delete()

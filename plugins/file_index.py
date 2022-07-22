@@ -22,7 +22,7 @@ async def index_target_chat(client: Bot, message: Message):
     index_skip_key[id] = int(message.message_id)
     #
     target_id = str(target_chat).split("-100")[1]
-    cfg_file = os.getcwd() + "/" + "cfg" + "/" + str(id) + "/" + str(target_id) + ".csv"
+    cfg_file = f"{os.getcwd()}/cfg/{id}/{str(target_id)}.csv"
     if os.path.isfile(cfg_file):
         await import_cfg_data(id, target_chat)
         await message.edit(Presets.TARGET_CFG_LOAD_MSG)
@@ -97,7 +97,7 @@ async def purge_media(client: Bot, message: Message):
     await asyncio.sleep(1)
     msg2 = await message.reply_text(Presets.WAIT_MSG, reply_markup=reply_markup_skip_purge)
     for i in msg_id_index:
-        if not id in purge_skip_key:
+        if id not in purge_skip_key:
             await msg2.delete()
             await clone_medias(client, message)
             return

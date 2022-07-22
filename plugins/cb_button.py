@@ -43,20 +43,23 @@ async def view_chat_config(client: Bot, cb: CallbackQuery):
     e = bool(query.delayed_clone)
     f = bool(query.caption)
     g = bool(query.file_caption)
-    await cb.answer(text=Presets.VIEW_CONF.format(
-        a if bool(query.s_chat) else "❎",
-        b if bool(query.d_chat) else "❎",
-        c if bool(query.from_id) else "❎",
-        d if bool(query.to_id) else "❎",
-        "✅" if e is True else "❎",
-        "✅" if f is True else "❎",
-        "✅" if g is True else "❎",
-        "✅" if "document" in file_types else "❎",
-        "✅" if "video" in file_types else "❎",
-        "✅" if "audio" in file_types else "❎",
-        "✅" if "photo" in file_types else "❎",
-        "✅" if "voice" in file_types else "❎"
-    ), show_alert=True)
+    await cb.answer(
+        text=Presets.VIEW_CONF.format(
+            a if bool(query.s_chat) else "❎",
+            b if bool(query.d_chat) else "❎",
+            c if bool(query.from_id) else "❎",
+            d if bool(query.to_id) else "❎",
+            "✅" if e else "❎",
+            "✅" if f else "❎",
+            "✅" if g else "❎",
+            "✅" if "document" in file_types else "❎",
+            "✅" if "video" in file_types else "❎",
+            "✅" if "audio" in file_types else "❎",
+            "✅" if "photo" in file_types else "❎",
+            "✅" if "voice" in file_types else "❎",
+        ),
+        show_alert=True,
+    )
 
 
 @Client.on_callback_query(filters.regex(r'^delay_btn$'))
@@ -64,11 +67,10 @@ async def delayed_clone(client: Bot, cb: CallbackQuery):
     id = int(cb.from_user.id)
     query = await query_msg(id)
     status = bool(query.delayed_clone)
-    if status is True:
-        await change_delay(id)
+    await change_delay(id)
+    if status:
         await cb.answer(Presets.DELAY_OFF, True)
     else:
-        await change_delay(id)
         await cb.answer(Presets.DELAY_ON, True)
 
 
@@ -77,11 +79,10 @@ async def file_caption(client: Bot, cb: CallbackQuery):
     id = int(cb.from_user.id)
     query = await query_msg(id)
     status = bool(query.caption)
-    if status is True:
-        await opt_caption(id)
+    await opt_caption(id)
+    if status:
         await cb.answer(Presets.CAPTION_OFF, True)
     else:
-        await opt_caption(id)
         await cb.answer(Presets.CAPTION_ON, True)
 
 
@@ -90,11 +91,10 @@ async def file_name_caption(client: Bot, cb: CallbackQuery):
     id = int(cb.from_user.id)
     query = await query_msg(id)
     status = bool(query.file_caption)
-    if status is True:
-        await opt_FN_caption(id)
+    await opt_FN_caption(id)
+    if status:
         await cb.answer(Presets.FN_AS_CAPT_OFF, True)
     else:
-        await opt_FN_caption(id)
         await cb.answer(Presets.FN_AS_CAPT_ON, True)
 
 
